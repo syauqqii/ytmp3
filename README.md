@@ -18,4 +18,4 @@ $ python ytmp3.py --url https://www.youtube.com/watch?v=M1YBy0F5y8c
 ### Screenshoot Program
 <img src="">
 
-  [akuaria]: <"https://api.akuari.my.id">
+  [akuaria]: <https://api.akuari.my.id>
