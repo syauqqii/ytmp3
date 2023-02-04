@@ -15,7 +15,7 @@ $ python ytmp3.py --url {link}
 $ python ytmp3.py --url https://www.youtube.com/watch?v=M1YBy0F5y8c
 ```
 
-### Screenshoot Program
+### Screenshot Program
 <img src="Screenshot (178).png">
 
   [akuaria]: <https://api.akuari.my.id>
