@@ -5,6 +5,19 @@ from requests import get
 from os import system
 from json import loads
 from argparse import ArgumentParser
+from validators import url as checkLink
+from re import compile
+
+defaultColor = "\033[0m"
+red = "\033[91m"
+green = "\033[92m"
+blue = "\033[94m"
+yellow = "\033[93m"
+
+def isYoutubeURL(url):
+	ytLink = compile(r'^(https?://)?(www\.)?(youtube\.com|youtu\.be)/.+$')
+	match = ytLink.match(url)
+	return match is not None
 
 if __name__ == "__main__":
 	try:
@@ -15,25 +28,35 @@ if __name__ == "__main__":
 		args 	= parser.parse_args()
 		
 		if args.url is None:
-			print("\n > Contoh penggunaan: ytmp3.py --url https://www.youtube.com/watch?v=M1YBy0F5y8c")
+			print(f"\n {defaultColor}> {blue}Contoh penggunaan: {defaultColor}ytmp3.py {yellow}--url{defaultColor} https://{red}www.youtube.com{defaultColor}/watch?v=M1YBy0F5y8c{defaultColor}")
 			exit(0)
 
-		print("\n > Starting program!")
+		if not checkLink(args.url):
+			print(f"\n > {red}URL {defaultColor}yang anda inputkan {red}tidak benar!{defaultColor}")
+			print(f"\n {defaultColor}> {blue}Contoh penggunaan: {defaultColor}ytmp3.py {yellow}--url{defaultColor} https://{red}www.youtube.com{defaultColor}/watch?v=M1YBy0F5y8c{defaultColor}")
+			exit(0)
+
+		if not isYoutubeURL(args.url):
+			print(f"\n > {red}URL {defaultColor}yang anda inputkan bukan URL {red}Youtube{defaultColor}!{defaultColor}")
+			print(f"\n {defaultColor}> {blue}Contoh penggunaan: {defaultColor}ytmp3.py {yellow}--url{defaultColor} https://{red}www.youtube.com{defaultColor}/watch?v=M1YBy0F5y8c{defaultColor}")
+			exit(0)
+
+		print(f"\n > {blue}Starting program{defaultColor}!")
 		url = args.url
 		finalURL = f"https://api.akuari.my.id/downloader/youtube3?link={url}&type=360"
-		print(" > Fromating URL success!")
-		print(" > Process request to API!")
+		print(f" > {green}Fromating URL success{defaultColor}!")
+		print(f" > {blue}Process request to API{defaultColor}!")
 		request = get(finalURL).text
-		print(" > Request to API success!")
+		print(f" > {green}Request to API success{defaultColor}!")
 		resultJSON = loads(request)
-		print(" > Reading response from API success!")
-		print(" > Process request to downloading file!")
+		print(f" > {green}Reading response from API success{defaultColor}!")
+		print(f" > {blue}Process request to downloading file{defaultColor}!")
 		res = get(resultJSON['audio']['audio'])
-		print(" > Download file success!")
-		print(" > Preparing to write file into ur pc!")
+		print(f" > {green}Download file success{defaultColor}!")
+		print(f" > {blue}Preparing to write file into ur pc{defaultColor}!")
 		with open(f"{resultJSON['title']}.mp3", "wb") as file:
 			file.write(res.content)
-		print(" > Success to add file into ur PC!")
-		print(f"\n > File : '{resultJSON['title']}.mp3', Size : '{resultJSON['audio']['audio']['size']}'")
+		print(f" > {green}Success to add file into ur PC{defaultColor}!")
+		print(f"\n > {yellow}File {defaultColor}: {green}'{resultJSON['title']}.mp3'{defaultColor}, {yellow}Size : {green}'{resultJSON['audio']['size']}'{defaultColor}")
 	except KeyboardInterrupt:
 		exit(0)
