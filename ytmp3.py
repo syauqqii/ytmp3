@@ -19,8 +19,17 @@ def isYoutubeURL(url):
 	match = ytLink.match(url)
 	return match is not None
 
+def clearScreen():
+	if name == "nt":
+		system("cls")
+	elif name == "posix":
+		system("clear")
+	else:
+		return
+
 if __name__ == "__main__":
 	try:
+		clearScreen()
 		parser = ArgumentParser(description='YT to MP3')
 
 		parser.add_argument('-U', '--url', dest='url', type=str, help='masukin url yt lah')
